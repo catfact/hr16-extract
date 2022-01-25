@@ -8,11 +8,6 @@ use std::process::Command;
 extern crate byteorder;
 use byteorder::{LittleEndian, WriteBytesExt};
 
-
-// sndfile for writing output
-// extern crate sndfile;
-// use sndfile::*;
-
 struct SampleParser {
     samp_data: Vec<i16>,
     rshift: u32,
@@ -84,14 +79,10 @@ fn export_sample(samp: &Vec<i16>, path: &str) {
 
 fn convert_raw(path: &str) {
     let out_path = path.replace(".raw", ".wav");
-    //println!("{}", &out_path);
-    //let result = 
     Command::new("sox")
             .args(["-r48000", "-b16", "-c1", "-L", "-esigned-integer", path, &out_path])
             .output()
             .expect("failed to execute sox command");
-    // println!("stdout: {}", str::from_utf8(&result.stdout).unwrap()); 
-    // println!("stderr: {}", str::from_utf8(&result.stderr).unwrap()); 
 }
 
 fn main() {
@@ -115,16 +106,7 @@ fn main() {
         i += 1;
         export_sample(&samp, &out_path);
         convert_raw(&out_path);
-        //println!("{}", out_path.as_path().display().to_string());
     }
     println!("...done.");
 
-    // if false {
-    //     for samp in samps {
-    //         for frame in samp {
-    //             print!("{}, ", frame);
-    //         }
-    //         print!("\n\n");
-    //     }
-    // }
 }
